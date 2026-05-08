@@ -1,0 +1,82 @@
+ERROR - 2026-05-08 12:15:14 --> Error connecting to the database: mysqli_sql_exception: No such file or directory in /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/MySQLi/Connection.php:201
+Stack trace:
+#0 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/MySQLi/Connection.php(201): mysqli->real_connect()
+#1 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#4 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/app/Controllers/Profil.php(26): CodeIgniter\Database\BaseBuilder->get()
+#5 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(951): App\Controllers\Profil->index()
+#6 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#8 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#9 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#10 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#11 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No such file or directory in /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/MySQLi/Connection.php:231
+Stack trace:
+#0 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#3 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/app/Controllers/Profil.php(26): CodeIgniter\Database\BaseBuilder->get()
+#4 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(951): App\Controllers\Profil->index()
+#5 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#6 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#7 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#8 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#9 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#10 {main}
+CRITICAL - 2026-05-08 12:15:14 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: No such file or directory
+[Method: GET, Route: choix]
+in SYSTEMPATH/Database/BaseConnection.php on line 606.
+ 1 SYSTEMPATH/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 3 APPPATH/Controllers/Profil.php(26): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\Profil->index()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+ERROR - 2026-05-08 12:16:27 --> Error connecting to the database: mysqli_sql_exception: No such file or directory in /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/MySQLi/Connection.php:201
+Stack trace:
+#0 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/MySQLi/Connection.php(201): mysqli->real_connect()
+#1 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#4 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/app/Controllers/Profil.php(26): CodeIgniter\Database\BaseBuilder->get()
+#5 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(951): App\Controllers\Profil->index()
+#6 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#7 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#8 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#9 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#10 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#11 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No such file or directory in /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/MySQLi/Connection.php:231
+Stack trace:
+#0 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#3 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/app/Controllers/Profil.php(26): CodeIgniter\Database\BaseBuilder->get()
+#4 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(951): App\Controllers\Profil->index()
+#5 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#6 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#7 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#8 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#9 /home/tsanta/Documents/S4/MrRojo/SI/Regime_Alimentaire/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#10 {main}
+CRITICAL - 2026-05-08 12:16:27 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: No such file or directory
+[Method: GET, Route: /]
+in SYSTEMPATH/Database/BaseConnection.php on line 606.
+ 1 SYSTEMPATH/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 3 APPPATH/Controllers/Profil.php(26): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\Profil->index()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
