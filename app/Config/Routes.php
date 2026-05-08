@@ -6,3 +6,15 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('login', 'Auth::login');
+$routes->post('login', 'Auth::authenticate');
+$routes->get('register', 'Auth::registerStep1');
+$routes->post('register/step1', 'Auth::storeStep1');
+$routes->get('register/step2', 'Auth::registerStep2');
+$routes->post('register/step2', 'Auth::storeStep2');
+$routes->get('logout', 'Auth::logout');
+
+$routes->get('dashboard', 'Dashboard::index');
+$routes->get('admin/dashboard', 'Dashboard::admin');
+$routes->get('option-gold', 'Dashboard::gold');
+$routes->get('regimes-suggeres', 'Dashboard::regimes');

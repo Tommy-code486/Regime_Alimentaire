@@ -1,0 +1,4 @@
+CRITICAL - 2026-05-08 13:43:29 --> ErrorException: Type of App\Controllers\BaseController::$helpers must not be defined (as in class CodeIgniter\Controller)
+[Method: GET, Route: /]
+in APPPATH/Controllers/BaseController.php on line 21.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
