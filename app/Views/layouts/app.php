@@ -26,11 +26,8 @@
         <a class="nav-item <?= ($activeMenu ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= esc(site_url(session('accountType') === 'admin' ? 'admin/dashboard' : 'dashboard')) ?>">
           <span class="label"><span class="dot"></span> Tableau de bord Admin</span>
         </a>
-        <a class="nav-item <?= ($activeMenu ?? '') === 'regimes' ? 'active' : '' ?>" href="<?= esc(site_url('regimes-suggeres')) ?>">
-          <span class="label"><span class="dot"></span> Régimes suggérés</span>
-        </a>
-        <a class="nav-item <?= ($activeMenu ?? '') === 'gold' ? 'active' : '' ?>" href="<?= esc(site_url('option-gold')) ?>">
-          <span class="label"><span class="dot"></span> Option Gold</span>
+        <a class="nav-item <?= ($activeMenu ?? '') === 'regimes' ? 'active' : '' ?>" href="<?= esc(site_url('regimes-liste')) ?>">
+          <span class="label"><span class="dot"></span> Listes des régimes</span>
         </a>
       </nav>
     <?php }else { ?>
