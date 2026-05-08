@@ -85,8 +85,6 @@ class Auth extends BaseController
             'prenom' => trim((string) $this->request->getPost('prenom')),
             'nom' => trim((string) $this->request->getPost('nom')),
             'email' => $email,
-            'date_naissance' => trim((string) $this->request->getPost('date_naissance')),
-            'telephone' => trim((string) $this->request->getPost('telephone')),
             'genre' => (string) $this->request->getPost('genre'),
             'mot_de_passe' => (string) $this->request->getPost('mot_de_passe'),
         ]);
