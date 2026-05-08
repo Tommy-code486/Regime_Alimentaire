@@ -78,6 +78,7 @@ class Dashboard extends BaseController
             'displayName' => $this->displayName(),
             'displayEmail' => (string) session('email'),
             'roleLabel' => (string) session('roleLabel'),
+            'accountType' => (string) session('accountType'),
             'isGold' => (bool) session('option_gold'),
         ], $data);
     }

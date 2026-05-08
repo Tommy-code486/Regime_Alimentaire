@@ -1,6 +1,6 @@
 <?= $this->extend('layouts/app') ?>
-
 <?= $this->section('content') ?>
+
 <div class="admin-grid">
   <div class="admin-card"><div class="label">Utilisateurs</div><div class="value">128</div><div class="note">Comptes actifs</div></div>
   <div class="admin-card"><div class="label">Admins</div><div class="value">2</div><div class="note">Supervision</div></div>
