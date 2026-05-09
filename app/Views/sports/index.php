@@ -41,7 +41,7 @@ $isActive = $actifValue === '1';
     <div class="page">
         <div class="page-body">
             <h1 class="page-title">Activites sportives</h1>
-
+            <a href="<?= esc(site_url('admin/dashboard')) ?>">Retour</a>
             <?php if ($message): ?>
                 <div class="flash <?= $messageType === 'error' ? 'flash-error' : 'flash-success' ?>">
                     <span><?= esc($message) ?></span>
