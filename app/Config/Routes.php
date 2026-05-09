@@ -15,9 +15,12 @@ $routes->post('register/step2', 'Auth::storeStep2');
 $routes->get('logout', 'Auth::logout');
 
 $routes->get('dashboard', 'Dashboard::index');
+$routes->post('dashboard/objectif', 'Dashboard::updateObjectif');
 $routes->get('admin/dashboard', 'Dashboard::admin');
 $routes->get('option-gold', 'Dashboard::gold');
+$routes->post('option-gold/activer', 'Gold::activate');
 $routes->get('regimes-suggeres', 'Dashboard::regimes');
+$routes->post('regimes-suggeres/choisir', 'RegimeSubscription::subscribe');
 $routes->post('portefeuille/valider', 'Portefeuille::validationCode');
 $routes->get('regimes-liste', 'Regimes::showRegimesList');
 $routes->get('regimes/create', 'Regimes::create');

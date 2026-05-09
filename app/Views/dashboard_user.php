@@ -1,10 +1,19 @@
 <?= $this->extend('layouts/app') ?>
 
 <?= $this->section('content') ?>
+<?php
+$selectedObjectif = (string) ($selectedObjectif ?? 'equilibre');
+$selectedObjectifLabel = (string) ($selectedObjectifLabel ?? 'IMC idéal');
+$poidsActuel = (float) ($poidsActuel ?? 0);
+$poidsObjectif = (float) ($poidsObjectif ?? 0);
+$regimeActifNom = (string) ($regimeActifNom ?? 'Aucun');
+$regimeActifSemaine = $regimeActifSemaine ?? null;
+$regimeActifDuree = (int) ($regimeActifDuree ?? 0);
+?>
 <div class="stats-grid">
   <div class="stat-card"><div class="lbl">IMC actuel</div><div class="val"><?= esc($imc ?? '24.2') ?></div><div class="sub">Poids normal</div></div>
-  <div class="stat-card"><div class="lbl">Poids actuel</div><div class="val">70 kg</div><div class="sub">Objectif : 65 kg</div></div>
-  <div class="stat-card"><div class="lbl">Régime actif</div><div class="val">Keto</div><div class="sub">Semaine 2/8</div></div>
+  <div class="stat-card"><div class="lbl">Poids actuel</div><div class="val"><?= esc(number_format($poidsActuel, 1, ',', ' ')) ?> kg</div><div class="sub">Objectif : <?= esc(number_format($poidsObjectif, 1, ',', ' ')) ?> kg</div></div>
+  <div class="stat-card"><div class="lbl">Régime actif</div><div class="val"><?= esc($regimeActifNom) ?></div><div class="sub"><?= $regimeActifSemaine ? 'Semaine ' . esc((string) $regimeActifSemaine) . '/' . esc((string) $regimeActifDuree) : 'Aucune souscription active' ?></div></div>
   <div class="stat-card"><div class="lbl">Porte-monnaie</div><div class="val"><?= esc(number_format((float) ($solde_portefeuille ?? 15000), 0, ',', ' ')) ?></div><div class="sub">Ar disponibles</div></div>
 </div>
 
@@ -18,9 +27,31 @@
   </div>
   <div class="card">
     <h3>Mon objectif</h3>
-    <div class="obj-btn"><span class="obj-icon">⬆️</span><div><div class="obj-title">Augmenter le poids</div><div class="obj-subtitle">Prise de masse</div></div></div>
-    <div class="obj-btn selected"><span class="obj-icon">⬇️</span><div><div class="obj-title">Réduire le poids</div><div class="obj-subtitle">Perte de poids</div></div></div>
-    <div class="obj-btn"><span class="obj-icon">🎯</span><div><div class="obj-title">IMC idéal</div><div class="obj-subtitle">Équilibrage</div></div></div>
+    <form method="post" action="<?= esc(site_url('dashboard/objectif')) ?>">
+      <?= csrf_field() ?>
+      <button class="obj-btn <?= $selectedObjectif === 'augmentation' ? 'selected' : '' ?>" type="submit" name="objectif" value="augmentation">
+        <span class="obj-icon">⬆️</span>
+        <div>
+          <div class="obj-title">Augmenter le poids</div>
+          <div class="obj-subtitle">Prise de masse</div>
+        </div>
+      </button>
+      <button class="obj-btn <?= $selectedObjectif === 'reduction' ? 'selected' : '' ?>" type="submit" name="objectif" value="reduction">
+        <span class="obj-icon">⬇️</span>
+        <div>
+          <div class="obj-title">Réduire le poids</div>
+          <div class="obj-subtitle">Perte de poids</div>
+        </div>
+      </button>
+      <button class="obj-btn <?= $selectedObjectif === 'equilibre' ? 'selected' : '' ?>" type="submit" name="objectif" value="equilibre">
+        <span class="obj-icon">🎯</span>
+        <div>
+          <div class="obj-title">IMC idéal</div>
+          <div class="obj-subtitle">Équilibrage</div>
+        </div>
+      </button>
+    </form>
+    <div class="wallet-note">Objectif actuel : <strong><?= esc($selectedObjectifLabel) ?></strong></div>
   </div>
 </div>
 

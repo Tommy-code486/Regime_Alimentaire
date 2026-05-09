@@ -1,6 +1,12 @@
 <?= $this->extend('layouts/app') ?>
 
 <?= $this->section('content') ?>
+<?php
+$wallet = (float) ($solde_portefeuille ?? 0);
+$goldPrice = (float) ($goldPrice ?? 25000);
+$goldMissing = (float) ($goldMissing ?? max(0, $goldPrice - $wallet));
+$isGold = (bool) ($isGold ?? false);
+?>
 <div class="gold-hero">
   <div class="icon">⭐</div>
   <h1>Passez à Gold et économisez !</h1>
@@ -26,7 +32,7 @@
   <div class="plan-card gold-card">
     <div class="gold-tag">GOLD</div>
     <div class="plan-name">Gold</div>
-    <div class="plan-price gold-price">25 000 Ar</div>
+    <div class="plan-price gold-price"><?= esc(number_format($goldPrice, 0, ',', ' ')) ?> Ar</div>
     <div class="plan-per">Paiement unique - Accès à vie</div>
     <ul class="plan-features">
       <li><span class="check-gold">✓</span> Calcul IMC</li>
@@ -36,11 +42,25 @@
       <li><span class="check-gold">✓</span> Activités sportives premium</li>
       <li><span class="check-gold">✓</span> Export PDF avancé</li>
     </ul>
-    <button class="btn-gold" type="button">Activer Gold - 25 000 Ar</button>
+    <?php if ($isGold) : ?>
+      <button class="btn-free" type="button" disabled>Option Gold déjà active</button>
+    <?php else : ?>
+      <form method="post" action="<?= esc(site_url('option-gold/activer')) ?>">
+        <?= csrf_field() ?>
+        <button class="btn-gold" type="submit">Activer Gold - <?= esc(number_format($goldPrice, 0, ',', ' ')) ?> Ar</button>
+      </form>
+    <?php endif; ?>
   </div>
 </div>
 
 <div class="wallet-info">
-  Votre solde actuel : <strong><?= esc(number_format((float) ($solde_portefeuille ?? 15000), 0, ',', ' ')) ?> Ar</strong> - Il vous manque <strong>10 000 Ar</strong> pour activer Gold.
+  Votre solde actuel : <strong><?= esc(number_format($wallet, 0, ',', ' ')) ?> Ar</strong>
+  <?php if ($isGold) : ?>
+    - Votre compte bénéficie déjà de la remise Gold.
+  <?php elseif ($goldMissing > 0) : ?>
+    - Il vous manque <strong><?= esc(number_format($goldMissing, 0, ',', ' ')) ?> Ar</strong> pour activer Gold.
+  <?php else : ?>
+    - Solde suffisant pour activer Gold dès maintenant.
+  <?php endif; ?>
 </div>
 <?= $this->endSection() ?>

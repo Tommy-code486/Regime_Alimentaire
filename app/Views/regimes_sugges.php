@@ -2,81 +2,90 @@
 <?= $this->extend('layouts/app') ?>
 
 <?= $this->section('content') ?>
-<p class="intro">Basé sur votre objectif : <strong>Réduire le poids</strong> - IMC actuel : <strong><?= esc($imc ?? '24.2') ?></strong></p>
+<?php
+$selectedObjectif = (string) ($selectedObjectif ?? 'equilibre');
+$selectedObjectifLabel = (string) ($selectedObjectifLabel ?? 'IMC idéal');
+$remiseGold = (float) ($remiseGold ?? 15);
+$isGold = (bool) ($isGold ?? false);
+?>
+
+<p class="intro">Basé sur votre objectif : <strong><?= esc($selectedObjectifLabel) ?></strong> - IMC actuel : <strong><?= esc((string) ($imc ?? '24.2')) ?></strong></p>
 
 <div class="filter-bar">
-  <div class="filter-pill active">Tous</div>
-  <div class="filter-pill">⬇️ Perte de poids</div>
-  <div class="filter-pill">⬆️ Prise de masse</div>
-  <div class="filter-pill">🎯 IMC idéal</div>
+  <a class="filter-pill <?= $selectedObjectif === 'reduction' ? 'active' : '' ?>" href="<?= esc(site_url('regimes-suggeres?objectif=reduction')) ?>">⬇️ Perte de poids</a>
+  <a class="filter-pill <?= $selectedObjectif === 'augmentation' ? 'active' : '' ?>" href="<?= esc(site_url('regimes-suggeres?objectif=augmentation')) ?>">⬆️ Prise de masse</a>
+  <a class="filter-pill <?= $selectedObjectif === 'equilibre' ? 'active' : '' ?>" href="<?= esc(site_url('regimes-suggeres?objectif=equilibre')) ?>">🎯 IMC idéal</a>
 </div>
 
 <div class="regimes-grid">
-  <div class="regime-card recommended">
-    <div class="badge-rec">Recommandé</div>
-    <div class="regime-top">🥗</div>
-    <div class="regime-body">
-      <div class="regime-name">Régime Méditerranéen</div>
-      <div class="regime-desc">Riche en légumes, poissons et huile d'olive. Idéal pour perdre 3-5 kg.</div>
-      <div class="macro-pills">
-        <span class="macro-pill pill-meat">Viande 20%</span>
-        <span class="macro-pill pill-fish">Poisson 40%</span>
-        <span class="macro-pill pill-poultry">Volaille 40%</span>
-      </div>
-      <div class="regime-footer">
-        <div>
-          <div class="duration-tag">📅 8 semaines</div>
-          <div class="price"><span class="price-gold">5 900 Ar</span> 5 015 Ar</div>
-        </div>
-        <button class="btn-choose" type="button">Choisir</button>
-      </div>
-    </div>
-  </div>
+  <?php if (! empty($regimes ?? [])) : ?>
+    <?php foreach (($regimes ?? []) as $index => $regime) : ?>
+      <?php
+      $prices = $regime['prices'] ?? [];
+      $recommended = $index === 0;
+      $icon = ((float) ($regime['variation_poids'] ?? 0) < 0) ? '🥗' : (((float) ($regime['variation_poids'] ?? 0) > 0) ? '💪' : '⚖️');
+      $firstPrice = ! empty($prices) ? (float) ($prices[0]['prix'] ?? 0) : null;
+      $firstDuration = ! empty($prices) ? (int) ($prices[0]['duree_semaines'] ?? 0) : (int) ($regime['duree_semaines'] ?? 0);
+      $finalPrice = $isGold && $firstPrice !== null ? $firstPrice * (1 - ($remiseGold / 100)) : $firstPrice;
+      ?>
+      <div class="regime-card <?= $recommended ? 'recommended' : '' ?>">
+        <?php if ($recommended) : ?>
+          <div class="badge-rec">Recommandé</div>
+        <?php endif; ?>
+        <div class="badge-gold"><?= esc((string) ($regime['objectif_nom'] ?? 'Objectif')) ?></div>
+        <div class="regime-top"><?= esc($icon) ?></div>
+        <div class="regime-body">
+          <div class="regime-name"><?= esc((string) ($regime['nom'] ?? '')) ?></div>
+          <div class="regime-desc"><?= esc((string) ($regime['description'] ?? '')) ?></div>
+          <div class="macro-pills">
+            <span class="macro-pill pill-meat">Viande <?= esc((string) ($regime['pourcentage_viande'] ?? 0)) ?>%</span>
+            <span class="macro-pill pill-fish">Poisson <?= esc((string) ($regime['pourcentage_poisson'] ?? 0)) ?>%</span>
+            <span class="macro-pill pill-poultry">Volaille <?= esc((string) ($regime['pourcentage_volaille'] ?? 0)) ?>%</span>
+          </div>
 
-  <div class="regime-card">
-    <div class="regime-top">🥩</div>
-    <div class="regime-body">
-      <div class="regime-name">Régime Keto</div>
-      <div class="regime-desc">Très faible en glucides, fort en lipides. Perte rapide jusqu'à 8 kg.</div>
-      <div class="macro-pills">
-        <span class="macro-pill pill-meat">Viande 50%</span>
-        <span class="macro-pill pill-fish">Poisson 20%</span>
-        <span class="macro-pill pill-poultry">Volaille 30%</span>
-      </div>
-      <div class="regime-footer">
-        <div>
-          <div class="duration-tag">📅 6 semaines</div>
-          <div class="price">7 500 Ar</div>
-        </div>
-        <button class="btn-choose" type="button">Choisir</button>
-      </div>
-    </div>
-  </div>
+          <form method="post" action="<?= esc(site_url('regimes-suggeres/choisir')) ?>">
+            <?= csrf_field() ?>
+            <input type="hidden" name="regime_id" value="<?= esc((string) ($regime['id'] ?? 0)) ?>">
 
-  <div class="regime-card">
-    <div class="badge-gold">Gold</div>
-    <div class="regime-top">🌿</div>
-    <div class="regime-body">
-      <div class="regime-name">Régime Végétarien</div>
-      <div class="regime-desc">Sans viande ni poisson. Équilibré et sain pour atteindre l'IMC idéal.</div>
-      <div class="macro-pills">
-        <span class="macro-pill pill-meat">Viande 0%</span>
-        <span class="macro-pill pill-fish">Poisson 0%</span>
-        <span class="macro-pill pill-poultry">Volaille 0%</span>
-      </div>
-      <div class="regime-footer">
-        <div>
-          <div class="duration-tag">📅 10 semaines</div>
-          <div class="price"><span class="price-gold">6 000 Ar</span> 5 100 Ar</div>
+            <div class="regime-footer" style="align-items: flex-end;">
+              <div>
+                <div class="duration-tag">📅 <?= esc((string) $firstDuration) ?> semaines</div>
+                <?php if ($finalPrice !== null) : ?>
+                  <div class="price">
+                    <?php if ($isGold) : ?>
+                      <span class="price-gold"><?= esc(number_format((float) $firstPrice, 0, ',', ' ')) ?> Ar</span>
+                    <?php endif; ?>
+                    <?= esc(number_format((float) $finalPrice, 0, ',', ' ')) ?> Ar
+                  </div>
+                <?php else : ?>
+                  <div class="price">Tarif indisponible</div>
+                <?php endif; ?>
+              </div>
+              <div>
+                <select name="prix_regime_id" <?= empty($prices) ? 'disabled' : '' ?> style="margin-bottom:8px; border:1px solid var(--border); border-radius:12px; padding:8px; background:white;">
+                  <?php foreach ($prices as $price) : ?>
+                    <option value="<?= esc((string) ($price['id'] ?? 0)) ?>">
+                      <?= esc((string) ($price['duree_semaines'] ?? 0)) ?> sem - <?= esc(number_format((float) ($price['prix'] ?? 0), 0, ',', ' ')) ?> Ar
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+                <button class="btn-choose" type="submit" <?= empty($prices) ? 'disabled' : '' ?>>Choisir</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <button class="btn-choose" type="button">Choisir</button>
       </div>
+    <?php endforeach; ?>
+  <?php else : ?>
+    <div class="card" style="grid-column: 1 / -1; text-align:center;">
+      <h3>Aucun régime disponible</h3>
+      <p class="intro">Aucun régime actif n'est encore disponible pour cet objectif.</p>
     </div>
-  </div>
+  <?php endif; ?>
 </div>
 
 <div class="export-bar">
-  <button class="btn-export" type="button">Exporter en PDF</button>
-  <button class="btn-export" type="button">Imprimer</button>
+  <a class="btn-export" href="<?= esc(site_url('dashboard')) ?>">Retour au dashboard</a>
+  <a class="btn-export" href="<?= esc(site_url('option-gold')) ?>">Voir option Gold</a>
 </div>
 <?= $this->endSection() ?>

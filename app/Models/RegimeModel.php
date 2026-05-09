@@ -60,6 +60,27 @@ class RegimeModel extends Model
         return $regime;
     }
 
+    public function getSuggestedByObjectif(?string $objectifNom = null): array
+    {
+        $builder = $this->select('regimes.*, objectifs.nom as objectif_nom, objectifs.description as objectif_description')
+            ->join('objectifs', 'objectifs.id = regimes.id_objectif', 'left')
+            ->where('regimes.actif', 1)
+            ->orderBy('regimes.id', 'DESC');
+
+        if (is_string($objectifNom) && trim($objectifNom) !== '') {
+            $builder->where('objectifs.nom', trim($objectifNom));
+        }
+
+        $regimes = $builder->findAll();
+        $priceModel = new PrixRegimeModel();
+
+        foreach ($regimes as &$regime) {
+            $regime['prices'] = $priceModel->findByRegime((int) $regime['id']);
+        }
+
+        return $regimes;
+    }
+
     public function saveRegime(array $data): int
     {
         $this->insert($data);
