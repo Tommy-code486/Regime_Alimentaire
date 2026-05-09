@@ -26,3 +26,13 @@ $routes->post('regimes/(:num)/update', 'Regimes::update/$1');
 $routes->post('regimes/(:num)/delete', 'Regimes::delete/$1');
 // Admin statistics
 $routes->get('admin/stats', 'AdminStats::index');
+
+// Sports CRUD (admin only via controller)
+$routes->group('sports', static function ($routes) {
+	$routes->get('/', 'SportController::index');
+	$routes->get('create', 'SportController::create');
+	$routes->post('store', 'SportController::store');
+	$routes->get('edit/(:num)', 'SportController::edit/$1');
+	$routes->post('update/(:num)', 'SportController::update/$1');
+	$routes->post('delete/(:num)', 'SportController::delete/$1');
+});

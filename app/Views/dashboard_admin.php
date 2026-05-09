@@ -47,5 +47,17 @@
       <div class="note">Surveillance des inscriptions et paiements</div>
     </div>
   </div>
+
+  <div class="list-card">
+    <h3>Gestion sportive</h3>
+    <div class="activity">
+      <div class="badge">S</div>
+      <div>
+        <div class="title">Activites sportives</div>
+        <div class="meta">Ajouter, modifier ou desactiver les activites proposees.</div>
+        <a class="btn-export" href="<?= esc(site_url('sports')) ?>">Gerer les activites</a>
+      </div>
+    </div>
+  </div>
 </div>
 <?= $this->endSection() ?>
