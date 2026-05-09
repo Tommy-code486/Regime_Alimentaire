@@ -2,11 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Models\IMCCategoryModel;
 use App\Models\ObjectifModel;
 use App\Models\ParametreModel;
 use App\Models\RegimeModel;
 use App\Models\SouscriptionModel;
 use App\Models\UserModel;
+use App\Models\ActiviteObjectifModel;
 
 class Dashboard extends BaseController
 {
@@ -23,18 +25,21 @@ class Dashboard extends BaseController
         $userModel = new UserModel();
         $objectifModel = new ObjectifModel();
         $souscriptionModel = new SouscriptionModel();
+        $imcCategoryModel = new IMCCategoryModel();
 
         $user = $this->loadCurrentUser($userModel);
         $objectifs = $objectifModel->allOrdered();
         $selectedObjectif = $this->resolveSelectedObjectif($objectifs, (float) ($user['imc'] ?? 0));
         $activeSouscription = $souscriptionModel->findActiveByUser((int) session('userId'));
+        $imcCategories = $imcCategoryModel->allOrdered();
 
         $currentWeight = (float) ($user['poids'] ?? 0);
         $targetWeight = $this->targetWeightByObjectif($selectedObjectif['nom'], $currentWeight);
+        $userIMCCategory = $imcCategoryModel->findByIMC((float) ($user['imc'] ?? 0));
 
         return view('dashboard_user', $this->baseViewData([
             'pageTitle' => 'Tableau de bord utilisateur',
-            'pageHeading' => 'Bonjour, ' . $this->displayName() . ' 👋',
+            'pageHeading' => 'Bonjour, ' . $this->displayName() ,
             'pageSubtitle' => 'Suivi de votre profil nutritionnel',
             'activeMenu' => 'dashboard',
             'accountBadge' => session('option_gold') ? 'Gold' : 'Standard',
@@ -46,6 +51,8 @@ class Dashboard extends BaseController
             'regimeActifNom' => is_array($activeSouscription) ? (string) ($activeSouscription['regime_nom'] ?? 'Aucun') : 'Aucun',
             'regimeActifSemaine' => is_array($activeSouscription) ? $this->computeCurrentWeek((string) ($activeSouscription['date_debut'] ?? '')) : null,
             'regimeActifDuree' => is_array($activeSouscription) ? (int) ($activeSouscription['regime_duree'] ?? 0) : 0,
+            'imcCategories' => $imcCategories,
+            'userIMCCategory' => $userIMCCategory,
         ]));
     }
 
@@ -75,6 +82,42 @@ class Dashboard extends BaseController
         return redirect()->to(site_url('dashboard'))->with('authSuccess', 'Objectif mis à jour.');
     }
 
+    /**
+     * Met à jour la catégorie IMC cible et réinitialise l'objectif à 'equilibre'
+     */
+    public function updateIMCTarget()
+    {
+        if (! session()->get('isLoggedIn')) {
+            return redirect()->to(site_url('login'));
+        }
+
+        if (session('accountType') !== 'user') {
+            return redirect()->to(site_url('admin/dashboard'));
+        }
+
+        $categoryId = (int) $this->request->getPost('imc_category_id');
+        if ($categoryId <= 0) {
+            return redirect()->back()->with('authError', 'Catégorie IMC invalide.');
+        }
+
+        $imcCategoryModel = new IMCCategoryModel();
+        $category = $imcCategoryModel->getById($categoryId);
+        if (! is_array($category)) {
+            return redirect()->back()->with('authError', 'Catégorie IMC non trouvée.');
+        }
+
+        // Calculer l'IMC cible (moyenne de la catégorie)
+        $targetIMC = (float) (($category['imc_min'] + $category['imc_max']) / 2);
+
+        // Stocker en session
+        session()->set('objectif_choisi', 'equilibre');
+        session()->set('imc_target', $targetIMC);
+        session()->set('imc_target_category_id', $categoryId);
+        session()->set('imc_target_category_name', $category['nom']);
+
+        return redirect()->to(site_url('dashboard'))->with('authSuccess', 'Catégorie IMC cible sélectionnée.');
+    }
+
     public function admin()
     {
         if (! session()->get('isLoggedIn')) {
@@ -87,7 +130,7 @@ class Dashboard extends BaseController
 
         return view('dashboard_admin', $this->baseViewData([
             'pageTitle' => 'Tableau de bord admin',
-            'pageHeading' => 'Bonjour, ' . $this->displayName() . ' 👋',
+            'pageHeading' => 'Bonjour, ' . $this->displayName(),
             'pageSubtitle' => 'Pilotage et supervision de la plateforme',
             'activeMenu' => 'dashboard',
             'accountBadge' => strtoupper((string) session('roleLabel')),
@@ -137,28 +180,49 @@ class Dashboard extends BaseController
         $objectifModel = new ObjectifModel();
         $regimeModel = new RegimeModel();
         $parametreModel = new ParametreModel();
+        $imcCategoryModel = new IMCCategoryModel();
+        $activiteObjectifModel = new ActiviteObjectifModel();
 
         $user = $this->loadCurrentUser($userModel);
+        $userIMC = (float) ($user['imc'] ?? 0);
         $objectifs = $objectifModel->allOrdered();
-        $selected = $this->resolveSelectedObjectif($objectifs, (float) ($user['imc'] ?? 0));
+        $selected = $this->resolveSelectedObjectif($objectifs, $userIMC);
 
-        $filter = trim((string) $this->request->getGet('objectif'));
-        if ($filter !== '') {
-            $isKnown = false;
-            foreach ($objectifs as $objectif) {
-                if ((string) ($objectif['nom'] ?? '') === $filter) {
-                    $isKnown = true;
-                    break;
+        // Vérifier si l'utilisateur a une catégorie IMC cible sélectionnée
+        $targetIMC = session('imc_target');
+        $targetCategoryName = session('imc_target_category_name');
+
+        if ($targetIMC !== null && (float) $targetIMC > 0) {
+            // Utiliser la logique de comparaison IMC
+            $regimes = $regimeModel->getSuggestedByIMCComparison($userIMC, (float) $targetIMC);
+            $selectedLabel = 'IMC idéal : ' . $targetCategoryName;
+            $sports = $activiteObjectifModel->getActivitesByIMCComparison($userIMC, (float) $targetIMC, 5);
+        } else {
+            // Logique traditionnelle par filtre
+            $filter = trim((string) $this->request->getGet('objectif'));
+            if ($filter !== '') {
+                $isKnown = false;
+                foreach ($objectifs as $objectif) {
+                    if ((string) ($objectif['nom'] ?? '') === $filter) {
+                        $isKnown = true;
+                        break;
+                    }
+                }
+
+                if ($isKnown) {
+                    $selected['nom'] = $filter;
+                    session()->set('objectif_choisi', $filter);
                 }
             }
 
-            if ($isKnown) {
-                $selected['nom'] = $filter;
-                session()->set('objectif_choisi', $filter);
-            }
+            $regimes = $regimeModel->getSuggestedByObjectif($selected['nom']);
+            $selectedLabel = $selected['label'];
+
+            // Obtenir les activités sportives pour l'objectif sélectionné
+            $objectifId = $this->getObjectifIdByNom($objectifs, $selected['nom']);
+            $sports = $objectifId > 0 ? $activiteObjectifModel->getActivitesByObjectif($objectifId, 5) : [];
         }
 
-        $regimes = $regimeModel->getSuggestedByObjectif($selected['nom']);
         $remiseGold = $parametreModel->getFloat('remise_gold', 15);
 
         foreach ($regimes as &$regime) {
@@ -180,15 +244,18 @@ class Dashboard extends BaseController
 
         return view('regimes_sugges', $this->baseViewData([
             'pageTitle' => 'Régimes suggérés',
-            'pageHeading' => 'Régimes recommandés 🥗',
+            'pageHeading' => 'Régimes recommandés',
             'pageSubtitle' => 'Suggestions adaptées à votre profil',
             'activeMenu' => 'regimes',
             'accountBadge' => session('option_gold') ? 'Gold' : 'Standard',
             'objectifs' => $objectifs,
             'selectedObjectif' => $selected['nom'],
-            'selectedObjectifLabel' => $selected['label'],
+            'selectedObjectifLabel' => $selectedLabel,
             'regimes' => $regimes,
             'remiseGold' => $remiseGold,
+            'sports' => $sports,
+            'userIMC' => $userIMC,
+            'targetIMC' => $targetIMC,
         ]));
     }
 
@@ -308,5 +375,19 @@ class Dashboard extends BaseController
         $displayName = trim((string) session('displayName'));
 
         return $displayName !== '' ? $displayName : 'Utilisateur';
+    }
+
+    /**
+     * Obtient l'ID de l'objectif par son nom
+     */
+    private function getObjectifIdByNom(array $objectifs, string $objectifNom): int
+    {
+        foreach ($objectifs as $objectif) {
+            if ((string) ($objectif['nom'] ?? '') === $objectifNom) {
+                return (int) ($objectif['id'] ?? 0);
+            }
+        }
+
+        return 0;
     }
 }

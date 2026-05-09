@@ -16,6 +16,7 @@ $routes->get('logout', 'Auth::logout');
 
 $routes->get('dashboard', 'Dashboard::index');
 $routes->post('dashboard/objectif', 'Dashboard::updateObjectif');
+$routes->post('dashboard/imc-target', 'Dashboard::updateIMCTarget');
 $routes->get('admin/dashboard', 'Dashboard::admin');
 $routes->get('option-gold', 'Dashboard::gold');
 $routes->post('option-gold/activer', 'Gold::activate');

@@ -43,7 +43,7 @@ $regimeActifDuree = (int) ($regimeActifDuree ?? 0);
           <div class="obj-subtitle">Perte de poids</div>
         </div>
       </button>
-      <button class="obj-btn <?= $selectedObjectif === 'equilibre' ? 'selected' : '' ?>" type="submit" name="objectif" value="equilibre">
+      <button class="obj-btn" type="button" onclick="toggleIMCCategories()" style="position:relative;">
         <span class="obj-icon">🎯</span>
         <div>
           <div class="obj-title">IMC idéal</div>
@@ -51,8 +51,36 @@ $regimeActifDuree = (int) ($regimeActifDuree ?? 0);
         </div>
       </button>
     </form>
-    <div class="wallet-note">Objectif actuel : <strong><?= esc($selectedObjectifLabel) ?></strong></div>
+    
+    <!-- Catégories IMC - Affichage dynamique -->
+    <div id="imc-categories-container" style="display: none; margin-top: 16px; padding: 16px; background: #f8f9fa; border-radius: 12px;">
+      <div style="font-weight: 600; margin-bottom: 12px;">Sélectionnez votre catégorie IMC cible :</div>
+      <form method="post" action="<?= esc(site_url('dashboard/imc-target')) ?>" id="imc-form">
+        <?= csrf_field() ?>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <?php foreach (($imcCategories ?? []) as $category): ?>
+            <button class="imc-category-btn" type="submit" name="imc_category_id" value="<?= esc((string) ($category['id'] ?? 0)) ?>" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: white; cursor: pointer; text-align: left; transition: all 0.3s;">
+              <div style="font-weight: 600;"><?= esc($category['nom'] ?? '') ?></div>
+              <div style="font-size: 12px; color: #666; margin-top: 4px;">
+                IMC: <?= esc(number_format((float) ($category['imc_min'] ?? 0), 1, ',', ' ')) ?> - <?= esc(number_format((float) ($category['imc_max'] ?? 0), 1, ',', ' ')) ?>
+              </div>
+            </button>
+          <?php endforeach; ?>
+        </div>
+      </form>
+    </div>
+
+    <div class="wallet-note">
+      Objectif actuel : <strong>
+        <?php if (session('imc_target_category_name')): ?>
+          <?= esc(session('imc_target_category_name')) ?>
+        <?php else: ?>
+          <?= esc($selectedObjectifLabel) ?>
+        <?php endif; ?>
+      </strong>
+    </div>
   </div>
+
 </div>
 
 <div class="card" style="margin-top:16px;">
@@ -67,4 +95,27 @@ $regimeActifDuree = (int) ($regimeActifDuree ?? 0);
     <input type="text" name="code" placeholder="Code promo (ex: NUTRI2024)" value="<?= esc(old('code')) ?>" required maxlength="50">    <button class="btn-sm" type="submit">Valider</button>
   </form>
 </div>
+
+<script>
+function toggleIMCCategories() {
+  const container = document.getElementById('imc-categories-container');
+  if (container.style.display === 'none' || container.style.display === '') {
+    container.style.display = 'block';
+  } else {
+    container.style.display = 'none';
+  }
+}
+
+// Ajouter des événements de survol aux boutons de catégories IMC
+document.querySelectorAll('.imc-category-btn').forEach(btn => {
+  btn.addEventListener('mouseenter', function() {
+    this.style.backgroundColor = '#e8f0fe';
+    this.style.borderColor = '#2196F3';
+  });
+  btn.addEventListener('mouseleave', function() {
+    this.style.backgroundColor = 'white';
+    this.style.borderColor = '#ddd';
+  });
+});
+</script>
 <?= $this->endSection() ?>
