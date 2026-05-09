@@ -80,6 +80,8 @@ class Dashboard extends BaseController
             'roleLabel' => (string) session('roleLabel'),
             'accountType' => (string) session('accountType'),
             'isGold' => (bool) session('option_gold'),
+            'imc' => session('imc'),
+            'solde_portefeuille' => session('solde_portefeuille'),
         ], $data);
     }
 

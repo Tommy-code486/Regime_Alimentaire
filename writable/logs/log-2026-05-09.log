@@ -1,0 +1,8 @@
+CRITICAL - 2026-05-09 07:57:28 --> ErrorException: Cannot redeclare App\Models\PortfModel::getCode()
+[Method: POST, Route: portefeuille/valider]
+in APPPATH/Models/PortfModel.php on line 30.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2026-05-09 07:57:41 --> ErrorException: Cannot redeclare App\Models\PortfModel::getCode()
+[Method: POST, Route: portefeuille/valider]
+in APPPATH/Models/PortfModel.php on line 30.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
