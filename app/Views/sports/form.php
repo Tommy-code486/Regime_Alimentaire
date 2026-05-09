@@ -19,7 +19,9 @@
         .errors ul { margin: 0; padding-left: 18px; }
     </style>
 </head>
-<body>
+<>
+    <?= $this->extend('layouts/app') ?>
+    <?= $this->section('content') ?>
     <div class="container">
         <h1><?= esc($title) ?></h1>
 
@@ -78,5 +80,6 @@
             </div>
         </form>
     </div>
+    <?php $this->endSection() ?>
 </body>
 </html>
