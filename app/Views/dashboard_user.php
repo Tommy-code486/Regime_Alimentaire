@@ -31,9 +31,10 @@
     <button class="btn-sm" type="button">Recharger</button>
   </div>
   <div class="wallet-note">Entrer un code de recharge</div>
-  <div class="code-input">
-    <input type="text" placeholder="Code promo (ex: NUTRI2024)">
-    <button class="btn-sm" type="button">Valider</button>
-  </div>
+  <form class="code-input" method="post" action="<?= esc(site_url('portefeuille/valider')) ?>">
+    <?= csrf_field() ?>
+    <input type="text" name="code" placeholder="Code promo (ex: NUTRI2024)" value="<?= esc(old('code')) ?>" required maxlength="50">
+    <button class="btn-sm" type="submit">Valider</button>
+  </form>
 </div>
 <?= $this->endSection() ?>
