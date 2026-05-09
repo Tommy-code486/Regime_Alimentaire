@@ -63,7 +63,7 @@ class Portefeuille extends BaseController
 
         if ($db->affectedRows() !== 1) {
             $db->transRollback();
-            return redirect()->back()->withInput()->with('authError', 'Code deja utilise.');
+            return redirect()->back()->withInput()->with('authError', 'Code déjà utilisé.');
         }
 
         $currentBalance = (float) ($user['solde_portefeuille'] ?? 0);
@@ -71,7 +71,7 @@ class Portefeuille extends BaseController
 
         if ($userModel->update($userId, ['solde_portefeuille' => $newBalance]) === false) {
             $db->transRollback();
-            return redirect()->back()->with('authError', 'Mise a jour du solde impossible.');
+            return redirect()->back()->with('authError', 'Mise à jour du solde impossible.');
         }
 
         $db->transCommit();

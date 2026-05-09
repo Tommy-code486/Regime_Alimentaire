@@ -91,6 +91,27 @@ $isActive = $actifValue === '1';
                     </div>
                 </div>
 
+                <?php if (! empty($objectifs ?? [])): ?>
+                    <div class="field">
+                        <label>Priorités par objectif</label>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:8px;">
+                            <?php foreach ($objectifs as $objectif): ?>
+                                <?php $oid = (int) ($objectif['id'] ?? 0); $sel = $priorities[$oid] ?? 0; ?>
+                                <div style="border:1px solid var(--border); padding:8px; border-radius:6px;">
+                                    <div style="font-weight:600; margin-bottom:6px;"><?= esc($objectif['nom'] ?? '') ?></div>
+                                    <select name="priorities[<?= esc((string)$oid) ?>]" style="width:100%;">
+                                        <option value="0" <?= $sel == 0 ? 'selected' : '' ?>>Aucune</option>
+                                        <option value="1" <?= $sel == 1 ? 'selected' : '' ?>>Haute</option>
+                                        <option value="2" <?= $sel == 2 ? 'selected' : '' ?>>Moyenne</option>
+                                        <option value="3" <?= $sel == 3 ? 'selected' : '' ?>>Basse</option>
+                                    </select>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <span class="form-hint">Définissez la priorité de cette activité pour chaque objectif.</span>
+                    </div>
+                <?php endif; ?>
+
                 <label class="toggle-row">
                     <input type="hidden" name="actif" value="0">
                     <input type="checkbox" name="actif" value="1" <?= $isActive ? 'checked' : '' ?>>
@@ -114,15 +135,11 @@ $isActive = $actifValue === '1';
                 $rowDesc = (string) ($row['description'] ?? '');
                 $rowCalories = (int) ($row['calories_par_heure'] ?? 0);
                 $rowActive = (int) ($row['actif'] ?? 0) === 1;
-                // Emojis pour différentes activités
-                $icons = ['🏃', '🚴', '⛹️', '🏊', '🧘', '🤸', '🏋️', '🚶', '🧗', '🤾'];
-                $icon = $icons[$rowId % count($icons)];
                 ?>
                 <div class="sport-card <?= $rowActive ? '' : 'inactive' ?>">
                     <?php if (! $rowActive): ?>
                         <div class="badge-inactive-card">Inactif</div>
                     <?php endif; ?>
-                    <div class="sport-top"><?= $icon ?></div>
                     <div class="sport-body">
                         <div class="sport-name"><?= esc($rowName) ?></div>
                         <?php if ($rowDesc): ?>

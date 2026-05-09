@@ -81,6 +81,40 @@ class RegimeModel extends Model
         return $regimes;
     }
 
+    /**
+     * Retourne les régimes basés sur la comparaison entre l'IMC utilisateur et l'IMC cible
+     * @param float $userIMC IMC de l'utilisateur
+     * @param float $targetIMC IMC cible
+     * @return array Les régimes recommandés
+     */
+    public function getSuggestedByIMCComparison(float $userIMC, float $targetIMC): array
+    {
+        // Déterminer l'objectif basé sur la comparaison
+        $objectifNom = $this->determineObjectifFromIMCComparison($userIMC, $targetIMC);
+        return $this->getSuggestedByObjectif($objectifNom);
+    }
+
+    /**
+     * Détermine l'objectif basé sur la comparaison des IMC
+     */
+    private function determineObjectifFromIMCComparison(float $userIMC, float $targetIMC): string
+    {
+        $difference = abs($userIMC - $targetIMC);
+
+        // Si très proche (différence < 1), maintenir
+        if ($difference < 1) {
+            return 'equilibre';
+        }
+
+        // Si IMC utilisateur < IMC cible, augmentation
+        if ($userIMC < $targetIMC) {
+            return 'augmentation';
+        }
+
+        // Si IMC utilisateur > IMC cible, réduction
+        return 'reduction';
+    }
+
     public function saveRegime(array $data): int
     {
         $this->insert($data);

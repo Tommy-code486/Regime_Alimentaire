@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS parametres;
 DROP TABLE IF EXISTS regimes;
 DROP TABLE IF EXISTS prix_regimes;
 DROP TABLE IF EXISTS activites_sportives;
+DROP TABLE IF EXISTS activites_objectifs;
+DROP TABLE IF EXISTS categories_imc;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS codes_portefeuille;
 DROP TABLE IF EXISTS souscriptions;
@@ -59,6 +61,25 @@ INSERT INTO objectifs VALUES
 (1, 'reduction', 'Perte de poids rapide et efficace.'),
 (2, 'augmentation', 'Prise de masse musculaire.'),
 (3, 'equilibre', 'Maintien du poids et équilibre alimentaire.');
+
+-- CATÉGORIES IMC (pour l'objectif "équilibre")
+DROP TABLE IF EXISTS categories_imc;
+CREATE TABLE categories_imc (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100),
+    imc_min FLOAT,
+    imc_max FLOAT,
+    description TEXT,
+    ordre INT
+);
+
+INSERT INTO categories_imc (nom, imc_min, imc_max, description, ordre) VALUES 
+('Maigreur', 0, 18.4, 'IMC inférieur à 18.5 - Poids insuffisant', 1),
+('Normal', 18.5, 24.9, 'IMC entre 18.5 et 24.9 - Poids normal', 2),
+('Surpoids', 25, 29.9, 'IMC entre 25 et 29.9 - Surpoids', 3),
+('Obésité légère', 30, 34.9, 'IMC entre 30 et 34.9 - Obésité légère', 4),
+('Obésité modérée', 35, 39.9, 'IMC entre 35 et 39.9 - Obésité modérée', 5),
+('Obésité sévère', 40, 100, 'IMC 40 et plus - Obésité sévère', 6);
 
 DROP TABLE IF EXISTS regimes;
 CREATE TABLE regimes (
@@ -117,6 +138,34 @@ INSERT INTO activites_sportives VALUES
 (4, 'Musculation', 'Entraînement avec poids.', 350, 1),
 (5, 'Yoga / Stretching', 'Souplesse et récupération.', 200, 1);
 
+-- RELATION ACTIVITÉS SPORTIVES - OBJECTIFS
+DROP TABLE IF EXISTS activites_objectifs;
+CREATE TABLE activites_objectifs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    activite_id INT,
+    objectif_id INT,
+    niveau_priorite INT COMMENT '1=haute, 2=moyenne, 3=basse',
+    FOREIGN KEY (activite_id) REFERENCES activites_sportives(id),
+    FOREIGN KEY (objectif_id) REFERENCES objectifs(id)
+);
+
+INSERT INTO activites_objectifs (activite_id, objectif_id, niveau_priorite) VALUES 
+-- Réduction (perte de poids)
+(1, 1, 1), -- Course à pied - très efficace pour brûler calories
+(2, 1, 1), -- Natation - sans impact sur les articulations
+(3, 1, 2), -- Vélo - cardio modéré
+(5, 1, 3), -- Yoga - aide à récupération
+-- Augmentation (prise de masse)
+(4, 2, 1), -- Musculation - priorité haute
+(3, 2, 2), -- Vélo - cardio pour endurance
+(5, 2, 2), -- Yoga - flexibilité et récupération
+(1, 2, 3), -- Course à pied - cardio léger
+-- Équilibre (maintien/IMC idéal)
+(5, 3, 1), -- Yoga - excellent pour équilibre
+(1, 3, 2), -- Course à pied - entretien cardio
+(2, 3, 2), -- Natation - sport complet
+(3, 3, 2), -- Vélo - activité équilibrée
+(4, 3, 2); -- Musculation - tonification générale
 
 DROP TABLE IF EXISTS users;
 

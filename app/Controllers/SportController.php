@@ -3,15 +3,21 @@
 namespace App\Controllers;
 
 use App\Models\SportModel;
+use App\Models\ObjectifModel;
+use App\Models\ActiviteObjectifModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 
 class SportController extends BaseController
 {
     private SportModel $sportModel;
+    private ActiviteObjectifModel $activiteObjectifModel;
+    private ObjectifModel $objectifModel;
 
     public function __construct()
     {
         $this->sportModel = new SportModel();
+        $this->activiteObjectifModel = new ActiviteObjectifModel();
+        $this->objectifModel = new ObjectifModel();
     }
 
     public function index(): string
@@ -19,6 +25,8 @@ class SportController extends BaseController
         $this->assertAdmin();
 
         $sports = $this->sportModel->getAllSports();
+        $objectifs = $this->objectifModel->allOrdered();
+        $priorities = [];
 
         return view('sports/index', [
             'sports' => $sports,
@@ -33,8 +41,10 @@ class SportController extends BaseController
             ],
             'errors' => session()->getFlashdata('errors') ?? [],
             'isEdit' => false,
+            'objectifs' => $objectifs,
+            'priorities' => $priorities,
         ]);
-    }
+        }
 
     public function create(): string
     {
@@ -59,7 +69,6 @@ class SportController extends BaseController
     public function edit(int $id): string
     {
         $this->assertAdmin();
-
         $sport = $this->sportModel->getSportById($id);
 
         if (! $sport) {
@@ -67,6 +76,8 @@ class SportController extends BaseController
         }
 
         $sports = $this->sportModel->getAllSports();
+        $objectifs = $this->objectifModel->allOrdered();
+        $priorities = $this->activiteObjectifModel->getPrioritiesForActivite($id);
 
         return view('sports/index', [
             'sports' => $sports,
@@ -75,13 +86,15 @@ class SportController extends BaseController
             'sport' => $sport,
             'errors' => session()->getFlashdata('errors') ?? [],
             'isEdit' => true,
+            'objectifs' => $objectifs,
+            'priorities' => $priorities,
         ]);
     }
 
     public function update(int $id)
     {
         $this->assertAdmin();
-
+        
         $result = $this->sportModel->updateSport($id, $this->request->getPost());
 
         if (! $result['success']) {

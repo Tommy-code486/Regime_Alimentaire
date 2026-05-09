@@ -143,4 +143,6 @@ class SportModel extends Model
 
         return $data;
     }
+
+    
 }
