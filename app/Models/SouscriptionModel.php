@@ -44,4 +44,15 @@ class SouscriptionModel extends Model
 
         return is_array($row) ? $row : null;
     }
+
+    public function findHistoryByUser(int $userId): array
+    {
+        return $this->select('souscriptions.*, regimes.nom as regime_nom, regimes.description as regime_description, regimes.duree_semaines as regime_duree, prix_regimes.duree_semaines as prix_duree_semaines, prix_regimes.prix as prix_montant')
+            ->join('regimes', 'regimes.id = souscriptions.regime_id', 'left')
+            ->join('prix_regimes', 'prix_regimes.id = souscriptions.prix_regime_id', 'left')
+            ->where('souscriptions.user_id', $userId)
+            ->orderBy('souscriptions.date_debut', 'DESC')
+            ->orderBy('souscriptions.id', 'DESC')
+            ->findAll();
+    }
 }

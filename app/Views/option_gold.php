@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <?php
 $wallet = (float) ($solde_portefeuille ?? 0);
-$goldPrice = (float) ($goldPrice ?? 25000);
+$goldPrice = (float) ($goldPrice ?? 250000);
 $goldMissing = (float) ($goldMissing ?? max(0, $goldPrice - $wallet));
 $isGold = (bool) ($isGold ?? false);
 ?>
