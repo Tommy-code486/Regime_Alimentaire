@@ -313,7 +313,7 @@ in APPPATH/Controllers/fpdf.php on line 1138.
  2 APPPATH/Controllers/fpdf.php(1138): include()
  3 APPPATH/Controllers/fpdf.php(461): FPDF->_loadfont()
  4 APPPATH/Controllers/fpdf.php(509): FPDF->AddFont()
- 5 APPPATH/Controllers/RegimePDF.php(32): FPDF->SetFont()
+ 5 APPPATH conflict/Controllers/RegimePDF.php(32): FPDF->SetFont()
  6 APPPATH/Controllers/RegimePDF.php(25): App\Controllers\RegimePDF->cataloguePDF()
  7 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\RegimePDF->exportPDF()
  8 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()

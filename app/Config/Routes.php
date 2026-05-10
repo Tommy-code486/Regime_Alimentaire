@@ -30,6 +30,8 @@ $routes->post('regimes', 'Regimes::store');
 $routes->get('regimes/(:num)/edit', 'Regimes::edit/$1');
 $routes->post('regimes/(:num)/update', 'Regimes::update/$1');
 $routes->post('regimes/(:num)/delete', 'Regimes::delete/$1');
+$routes->get('regimes-liste/pdf', 'PdfExport::regimes');
+$routes->get('dashboard/regime-pdf', 'PdfExport::regimeFiche');
 // Admin statistics
 $routes->get('admin/stats', 'AdminStats::index');
 
