@@ -67,7 +67,6 @@
 </div>
 
 <div class="export-bar">
-	<button class="btn-export" type="button">Exporter en PDF</button>
-	<button class="btn-export" type="button">Imprimer</button>
+	<button class="btn-export" type="button" onclick="window.print()">Imprimer</button>
 </div>
 <?= $this->endSection() ?>
