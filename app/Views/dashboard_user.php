@@ -9,6 +9,12 @@ $poidsObjectif = (float) ($poidsObjectif ?? 0);
 $regimeActifNom = (string) ($regimeActifNom ?? 'Aucun');
 $regimeActifSemaine = $regimeActifSemaine ?? null;
 $regimeActifDuree = (int) ($regimeActifDuree ?? 0);
+$regimeActifDescription = trim((string) ($regimeActifDescription ?? ''));
+$regimeActifVariation = (float) ($regimeActifVariation ?? 0);
+$regimeActifViande = (int) ($regimeActifViande ?? 0);
+$regimeActifPoisson = (int) ($regimeActifPoisson ?? 0);
+$regimeActifVolaille = (int) ($regimeActifVolaille ?? 0);
+$hasRegimeActif = $regimeActifNom !== 'Aucun';
 ?>
 <div class="stats-grid">
   <div class="stat-card"><div class="lbl">IMC actuel</div><div class="val"><?= esc($imc ?? '24.2') ?></div><div class="sub">Poids normal</div></div>
@@ -81,6 +87,27 @@ $regimeActifDuree = (int) ($regimeActifDuree ?? 0);
     </div>
   </div>
 
+</div>
+
+<div class="card" style="margin-top:16px;">
+  <h3>Détails du régime actif</h3>
+  <?php if (! $hasRegimeActif): ?>
+    <div class="wallet-note">Aucune souscription active pour afficher les détails.</div>
+  <?php else: ?>
+    <div style="display:grid; gap:10px;">
+      <div><strong>Nom :</strong> <?= esc($regimeActifNom) ?></div>
+      <div><strong>Description :</strong> <?= $regimeActifDescription !== '' ? esc($regimeActifDescription) : 'Non renseignée' ?></div>
+      <div><strong>Durée :</strong> <?= esc((string) $regimeActifDuree) ?> semaine<?= $regimeActifDuree > 1 ? 's' : '' ?></div>
+      <div><strong>Composition :</strong>
+        <?php if (($regimeActifViande + $regimeActifPoisson + $regimeActifVolaille) > 0): ?>
+          <?= esc((string) $regimeActifViande) ?>% viande, <?= esc((string) $regimeActifPoisson) ?>% poisson, <?= esc((string) $regimeActifVolaille) ?>% volaille
+        <?php else: ?>
+          Non renseignée
+        <?php endif; ?>
+      </div>
+      <div><strong>Variation de poids estimée :</strong> <?= esc(number_format($regimeActifVariation, 1, ',', ' ')) ?> kg</div>
+    </div>
+  <?php endif; ?>
 </div>
 
 <div class="card" style="margin-top:16px;">

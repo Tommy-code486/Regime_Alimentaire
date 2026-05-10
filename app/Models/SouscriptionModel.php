@@ -33,7 +33,7 @@ class SouscriptionModel extends Model
     {
         $today = date('Y-m-d');
 
-        $row = $this->select('souscriptions.*, regimes.nom as regime_nom, regimes.duree_semaines as regime_duree')
+        $row = $this->select('souscriptions.*, regimes.nom as regime_nom, regimes.duree_semaines as regime_duree, regimes.description as regime_description, regimes.pourcentage_viande as regime_pourcentage_viande, regimes.pourcentage_poisson as regime_pourcentage_poisson, regimes.pourcentage_volaille as regime_pourcentage_volaille, regimes.variation_poids as regime_variation_poids')
             ->join('regimes', 'regimes.id = souscriptions.regime_id', 'left')
             ->where('souscriptions.user_id', $userId)
             ->where('souscriptions.date_fin >=', $today)
