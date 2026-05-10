@@ -24,10 +24,10 @@
     <?php if ($accountType === 'admin') { ?>
       <nav class="nav">
         <a class="nav-item <?= ($activeMenu ?? '') === 'stats' ? 'active' : '' ?>" href="<?= esc(site_url('admin/stats')) ?>">
-          <span class="label"><span class="dot"></span>Dasboard</span>
+          <span class="label"><span class="dot"></span>Dashboard</span>
         </a>
         <a class="nav-item <?= ($activeMenu ?? '') === 'regimes' ? 'active' : '' ?>" href="<?= esc(site_url('regimes-liste')) ?>">
-          <span class="label"><span class="dot"></span> Listes des régimes</span>
+          <span class="label"><span class="dot"></span> Liste des régimes</span>
         </a>
         <a class="nav-item <?= ($activeMenu ?? '') === 'sports' ? 'active' : '' ?>" href="<?= esc(site_url('sports')) ?>">
           <span class="label"><span class="dot"></span> Activites sportives</span>
