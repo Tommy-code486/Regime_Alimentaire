@@ -107,6 +107,9 @@ $hasRegimeActif = $regimeActifNom !== 'Aucun';
       </div>
       <div><strong>Variation de poids estimée :</strong> <?= esc(number_format($regimeActifVariation, 1, ',', ' ')) ?> kg</div>
     </div>
+    <div style="margin-top:12px;">
+      <a class="btn-export" href="<?= esc(site_url('dashboard/regime-pdf')) ?>">Exporter en PDF ma regime</a>
+    </div>
   <?php endif; ?>
 </div>
 
