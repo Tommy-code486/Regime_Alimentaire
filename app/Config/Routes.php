@@ -21,6 +21,7 @@ $routes->get('admin/dashboard', 'Dashboard::admin');
 $routes->get('option-gold', 'Dashboard::gold');
 $routes->post('option-gold/activer', 'Gold::activate');
 $routes->get('regimes-suggeres', 'Dashboard::regimes');
+$routes->get('exportPDF', 'RegimePDF::exportPDF');
 $routes->post('regimes-suggeres/choisir', 'RegimeSubscription::subscribe');
 $routes->post('portefeuille/valider', 'Portefeuille::validationCode');
 $routes->get('regimes-liste', 'Regimes::showRegimesList');
@@ -29,6 +30,8 @@ $routes->post('regimes', 'Regimes::store');
 $routes->get('regimes/(:num)/edit', 'Regimes::edit/$1');
 $routes->post('regimes/(:num)/update', 'Regimes::update/$1');
 $routes->post('regimes/(:num)/delete', 'Regimes::delete/$1');
+$routes->get('regimes-liste/pdf', 'PdfExport::regimes');
+$routes->get('dashboard/regime-pdf', 'PdfExport::regimeFiche');
 // Admin statistics
 $routes->get('admin/stats', 'AdminStats::index');
 

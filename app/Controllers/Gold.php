@@ -33,7 +33,7 @@ class Gold extends BaseController
             return redirect()->to(site_url('option-gold'))->with('authSuccess', 'Option Gold déjà active.');
         }
 
-        $goldPrice = $parametreModel->getFloat('prix_option_gold', 25000);
+        $goldPrice = $parametreModel->getFloat('prix_option_gold', 250000);
         $wallet = (float) ($user['solde_portefeuille'] ?? 0);
 
         if ($wallet < $goldPrice) {

@@ -42,7 +42,7 @@ CREATE TABLE parametres (
 INSERT INTO parametres (id, cle, valeur, description, updated_at) VALUES 
 (1, 'imc_min_normal', '18.5', 'IMC minimum pour être considéré normal', NOW()),
 (2, 'imc_max_normal', '24.9', 'IMC maximum pour être considéré normal', NOW()),
-(3, 'prix_option_gold', '25000', 'Prix option Gold en Ariary (paiement unique)', NOW()),
+(3, 'prix_option_gold', '250000', 'Prix option Gold en Ariary (paiement unique)', NOW()),
 (4, 'remise_gold', '15', 'Pourcentage de remise pour les membres Gold', NOW()),
 (5, 'proteines_jour_g', '500', 'Apport protéines de base par jour en grammes', NOW());
 
@@ -201,12 +201,15 @@ CREATE TABLE codes_portefeuille (
 );
 
 INSERT INTO codes_portefeuille (id, code, montant, est_valide, created_at) VALUES 
-(1, 'BIENV-10K-2026', 10000, 0, NOW()),
+(1, 'BIENV-100K-2026', 100000, 0, NOW()),
 (2, 'PROMO-5K-MARS', 5000, 0, NOW()),
 (3, 'BONUS-20K-VIP', 20000, 0, NOW()),
 (4, 'CODE-15K-SANTE', 15000, 0, NOW()),
 (7, 'START-3K-NEW', 3000, 0, NOW()),
-(8, 'OFFRE-25K-GOLD', 25000, 1, NOW());
+(8, 'OFFRE-250K-GOLD', 250000, 0, NOW()),
+(9, 'SUPER-500K-2026', 500000, 0, NOW()),
+(10, 'EXTRA-1M-REGIME', 1000000, 0, NOW());
+
 
 
 
@@ -256,10 +259,10 @@ INSERT INTO type_paiments VALUES
 
 INSERT INTO paiements VALUES 
 (1, 1, 1, 60000, 1, '2026-01-20 08:00:00'),
-(2, 2, NULL, 25000, 2, '2026-01-15 10:30:00'),
+(2, 2, NULL, 250000, 2, '2026-01-15 10:30:00'),
 (3, 2, 2, 80750, 1, '2026-01-25 11:00:00'),
 (4, 3, 3, 55000, 1, '2026-02-10 09:00:00'),
-(5, 4, NULL, 25000, 2, '2026-02-20 14:30:00'),
+(5, 4, NULL, 250000, 2, '2026-02-20 14:30:00'),
 (6, 4, 4, 63750, 1, '2026-03-01 14:00:00'),
 (7, 5, 5, 65000, 1, '2026-03-10 11:00:00');
 

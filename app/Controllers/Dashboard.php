@@ -31,6 +31,20 @@ class Dashboard extends BaseController
         $objectifs = $objectifModel->allOrdered();
         $selectedObjectif = $this->resolveSelectedObjectif($objectifs, (float) ($user['imc'] ?? 0));
         $activeSouscription = $souscriptionModel->findActiveByUser((int) session('userId'));
+        $subscriptionHistory = $souscriptionModel->findHistoryByUser((int) session('userId'));
+        $historyFilter = strtolower(trim((string) $this->request->getGet('history')));
+        if (! in_array($historyFilter, ['all', 'active', 'ended'], true)) {
+            $historyFilter = 'all';
+        }
+
+        if ($historyFilter !== 'all') {
+            $today = strtotime(date('Y-m-d'));
+            $subscriptionHistory = array_values(array_filter($subscriptionHistory, static function (array $item) use ($historyFilter, $today): bool {
+                $isActive = ! empty($item['date_fin']) && strtotime((string) $item['date_fin']) >= $today;
+
+                return $historyFilter === 'active' ? $isActive : ! $isActive;
+            }));
+        }
         $imcCategories = $imcCategoryModel->allOrdered();
 
         $currentWeight = (float) ($user['poids'] ?? 0);
@@ -51,11 +65,8 @@ class Dashboard extends BaseController
             'regimeActifNom' => is_array($activeSouscription) ? (string) ($activeSouscription['regime_nom'] ?? 'Aucun') : 'Aucun',
             'regimeActifSemaine' => is_array($activeSouscription) ? $this->computeCurrentWeek((string) ($activeSouscription['date_debut'] ?? '')) : null,
             'regimeActifDuree' => is_array($activeSouscription) ? (int) ($activeSouscription['regime_duree'] ?? 0) : 0,
-            'regimeActifDescription' => is_array($activeSouscription) ? (string) ($activeSouscription['regime_description'] ?? '') : '',
-            'regimeActifVariation' => is_array($activeSouscription) ? (float) ($activeSouscription['regime_variation_poids'] ?? 0) : 0,
-            'regimeActifViande' => is_array($activeSouscription) ? (int) ($activeSouscription['regime_pourcentage_viande'] ?? 0) : 0,
-            'regimeActifPoisson' => is_array($activeSouscription) ? (int) ($activeSouscription['regime_pourcentage_poisson'] ?? 0) : 0,
-            'regimeActifVolaille' => is_array($activeSouscription) ? (int) ($activeSouscription['regime_pourcentage_volaille'] ?? 0) : 0,
+            'subscriptionHistory' => $subscriptionHistory,
+            'historyFilter' => $historyFilter,
             'imcCategories' => $imcCategories,
             'userIMCCategory' => $userIMCCategory,
         ]));
@@ -263,6 +274,8 @@ class Dashboard extends BaseController
             'targetIMC' => $targetIMC,
         ]));
     }
+    
+
 
     private function baseViewData(array $data): array
     {

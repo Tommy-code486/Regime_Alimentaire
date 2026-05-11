@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <?php
 $wallet = (float) ($solde_portefeuille ?? 0);
-$goldPrice = (float) ($goldPrice ?? 25000);
+$goldPrice = (float) ($goldPrice ?? 250000);
 $goldMissing = (float) ($goldMissing ?? max(0, $goldPrice - $wallet));
 $isGold = (bool) ($isGold ?? false);
 ?>
@@ -22,9 +22,9 @@ $isGold = (bool) ($isGold ?? false);
       <li><span class="check">✓</span> Calcul IMC</li>
       <li><span class="check">✓</span> Suggestions de régimes</li>
       <li><span class="check">✓</span> Porte-monnaie</li>
-      <li><span class="cross">✗</span> Remise sur les régimes</li>
+      <li><span class="check">✓</span> Export PDF </li>
+     <li><span class="cross">✗</span> Remise sur les régimes</li>
       <li><span class="cross">✗</span> Activités sportives premium</li>
-      <li><span class="cross">✗</span> Export PDF avancé</li>
     </ul>
     <button class="btn-free" type="button">Plan actuel</button>
   </div>
