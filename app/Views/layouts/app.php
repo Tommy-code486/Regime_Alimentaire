@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= esc($pageTitle ?? 'NutriPlan') ?></title>
+  <title><?= esc($pageTitle ?? 'RegimeAlimentaire') ?></title>
   <link rel="stylesheet" href="<?= esc(base_url('assets/css/app.css')) ?>">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <div class="logo">🥗 NutriPlan</div>
+        <div class="logo">RegimeAlimentaire</div>
         <div class="meta"><?= esc($pageTitle ?? 'Espace membre') ?></div>
       </div>
 
@@ -58,7 +58,7 @@
     <main class="content">
       <div class="topbar">
         <div>
-          <h1><?= esc($pageHeading ?? ($pageTitle ?? 'NutriPlan')) ?></h1>
+          <h1><?= esc($pageHeading ?? ($pageTitle ?? 'RegimeAlimentaire')) ?></h1>
           <p><?= esc($pageSubtitle ?? '') ?></p>
         </div>
         <?php if (! empty($accountBadge)) : ?>
