@@ -11,7 +11,7 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <div class="logo">🥗 NutriPlan</div>
+        <div class="logo">RegimeAlimentaire</div>
         <div class="meta"><?= esc($pageTitle ?? 'Espace membre') ?></div>
       </div>
 
