@@ -10,7 +10,7 @@
   <div class="auth-shell">
     <section class="auth-hero">
       <div class="hero-card">
-        <div class="brand"><span class="brand-badge">🥗</span> NutriPlan</div>
+        <div class="brand"><span class="brand-badge">🥗</span>RegimeAlimentaire</div>
         <p class="hero-copy">Votre espace nutritionnel centralise la connexion, l'inscription et le suivi de vos régimes avec une interface plus lisible et cohérente.</p>
         <div class="hero-metric">
           <strong>IMC</strong>
